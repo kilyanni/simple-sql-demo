@@ -1,0 +1,64 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\nSELECT\n    c.title AS course,\n    cs.title AS section,\n    f.title AS file,\n    f.type\nFROM \"user\" AS u\nINNER JOIN course_member AS cm ON u.uuid = cm.user_uuid\nINNER JOIN course AS c ON cm.course_uuid = c.uuid\nINNER JOIN course_section AS cs ON c.uuid = cs.course_uuid\nINNER JOIN file AS f ON cs.uuid = f.section_uuid\nWHERE\n    u.uuid = $1\n    AND cm.status = 'active'\n    AND cs.visibility = 'visible'\nORDER BY c.title, cs.position, f.title\n",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "course",
+        "type_info": "Varchar",
+        "origin": {
+          "Table": {
+            "table": "course",
+            "name": "title"
+          }
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "section",
+        "type_info": "Varchar",
+        "origin": {
+          "Table": {
+            "table": "course_section",
+            "name": "title"
+          }
+        }
+      },
+      {
+        "ordinal": 2,
+        "name": "file",
+        "type_info": "Varchar",
+        "origin": {
+          "Table": {
+            "table": "file",
+            "name": "title"
+          }
+        }
+      },
+      {
+        "ordinal": 3,
+        "name": "type",
+        "type_info": "Varchar",
+        "origin": {
+          "Table": {
+            "table": "file",
+            "name": "type"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "4fefe3018bcc03633006f36dcadb7c18e4aff250013d44778e129245c695ebdb"
+}

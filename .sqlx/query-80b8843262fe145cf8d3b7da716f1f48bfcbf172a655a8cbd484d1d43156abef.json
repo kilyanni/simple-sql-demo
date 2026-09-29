@@ -1,0 +1,122 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\nSELECT\n    course AS \"course!\",\n    start_date AS \"start_date!\",\n    end_date,\n    active_members AS \"active_members!\",\n    sections AS \"sections!\",\n    files AS \"files!\",\n    assignments AS \"assignments!\",\n    quizzes AS \"quizzes!\",\n    forums AS \"forums!\"\nFROM v_course_overview\nORDER BY start_date DESC, course ASC\n",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "course!",
+        "type_info": "Varchar",
+        "origin": {
+          "Table": {
+            "table": "v_course_overview",
+            "name": "course"
+          }
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "start_date!",
+        "type_info": "Date",
+        "origin": {
+          "Table": {
+            "table": "v_course_overview",
+            "name": "start_date"
+          }
+        }
+      },
+      {
+        "ordinal": 2,
+        "name": "end_date",
+        "type_info": "Date",
+        "origin": {
+          "Table": {
+            "table": "v_course_overview",
+            "name": "end_date"
+          }
+        }
+      },
+      {
+        "ordinal": 3,
+        "name": "active_members!",
+        "type_info": "Int8",
+        "origin": {
+          "Table": {
+            "table": "v_course_overview",
+            "name": "active_members"
+          }
+        }
+      },
+      {
+        "ordinal": 4,
+        "name": "sections!",
+        "type_info": "Int8",
+        "origin": {
+          "Table": {
+            "table": "v_course_overview",
+            "name": "sections"
+          }
+        }
+      },
+      {
+        "ordinal": 5,
+        "name": "files!",
+        "type_info": "Int8",
+        "origin": {
+          "Table": {
+            "table": "v_course_overview",
+            "name": "files"
+          }
+        }
+      },
+      {
+        "ordinal": 6,
+        "name": "assignments!",
+        "type_info": "Int8",
+        "origin": {
+          "Table": {
+            "table": "v_course_overview",
+            "name": "assignments"
+          }
+        }
+      },
+      {
+        "ordinal": 7,
+        "name": "quizzes!",
+        "type_info": "Int8",
+        "origin": {
+          "Table": {
+            "table": "v_course_overview",
+            "name": "quizzes"
+          }
+        }
+      },
+      {
+        "ordinal": 8,
+        "name": "forums!",
+        "type_info": "Int8",
+        "origin": {
+          "Table": {
+            "table": "v_course_overview",
+            "name": "forums"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ]
+  },
+  "hash": "80b8843262fe145cf8d3b7da716f1f48bfcbf172a655a8cbd484d1d43156abef"
+}

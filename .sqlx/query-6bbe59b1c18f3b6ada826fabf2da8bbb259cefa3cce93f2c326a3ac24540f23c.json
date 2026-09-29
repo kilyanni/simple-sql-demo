@@ -1,0 +1,40 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\nSELECT\n    s.submitted_at,\n    fu.due_date\nFROM submission AS s\nINNER JOIN file_upload AS fu ON s.file_upload_uuid = fu.uuid\nWHERE fu.uuid = $1\nORDER BY s.submitted_at\n",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "submitted_at",
+        "type_info": "Timestamp",
+        "origin": {
+          "Table": {
+            "table": "submission",
+            "name": "submitted_at"
+          }
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "due_date",
+        "type_info": "Timestamp",
+        "origin": {
+          "Table": {
+            "table": "file_upload",
+            "name": "due_date"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      false,
+      true
+    ]
+  },
+  "hash": "6bbe59b1c18f3b6ada826fabf2da8bbb259cefa3cce93f2c326a3ac24540f23c"
+}

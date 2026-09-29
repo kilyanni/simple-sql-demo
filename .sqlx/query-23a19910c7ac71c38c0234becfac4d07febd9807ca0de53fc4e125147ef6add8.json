@@ -1,0 +1,66 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\nSELECT\n    c.title AS course,\n    fo.title AS forum,\n    COUNT(DISTINCT d.uuid) AS \"threads!\",\n    COUNT(p.uuid) AS \"posts!\",\n    COUNT(DISTINCT p.author_uuid) AS \"authors!\",\n    MAX(p.created_at) AS last_post\nFROM course AS c\nINNER JOIN course_section AS cs ON c.uuid = cs.course_uuid\nINNER JOIN forum AS fo ON cs.uuid = fo.course_section_uuid\nLEFT JOIN discussion AS d ON fo.uuid = d.forum_uuid\nLEFT JOIN post AS p ON d.uuid = p.discussion_uuid\nGROUP BY c.uuid, fo.uuid\nORDER BY COUNT(p.uuid) DESC\n",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "course",
+        "type_info": "Varchar",
+        "origin": {
+          "Table": {
+            "table": "course",
+            "name": "title"
+          }
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "forum",
+        "type_info": "Varchar",
+        "origin": {
+          "Table": {
+            "table": "forum",
+            "name": "title"
+          }
+        }
+      },
+      {
+        "ordinal": 2,
+        "name": "threads!",
+        "type_info": "Int8",
+        "origin": "Expression"
+      },
+      {
+        "ordinal": 3,
+        "name": "posts!",
+        "type_info": "Int8",
+        "origin": "Expression"
+      },
+      {
+        "ordinal": 4,
+        "name": "authors!",
+        "type_info": "Int8",
+        "origin": "Expression"
+      },
+      {
+        "ordinal": 5,
+        "name": "last_post",
+        "type_info": "Timestamp",
+        "origin": "Expression"
+      }
+    ],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": [
+      false,
+      false,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  "hash": "23a19910c7ac71c38c0234becfac4d07febd9807ca0de53fc4e125147ef6add8"
+}

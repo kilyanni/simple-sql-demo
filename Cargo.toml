@@ -1,0 +1,24 @@
+[package]
+name = "dashboard-rs"
+version = "0.1.0"
+edition = "2024"
+
+[lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+# Counts cast to chart coordinates cannot reach the lossy range.
+cast_precision_loss = "allow"
+cast_possible_truncation = "allow"
+# Markup is consumed by the html! macro; a borrow would only move the clone to the caller.
+needless_pass_by_value = "allow"
+similar_names = "allow"
+
+[dependencies]
+axum = "0.8"
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+sqlx = { version = "0.9", features = ["runtime-tokio", "postgres", "uuid", "chrono", "rust_decimal"] }
+maud = { version = "0.27", features = ["axum"] }
+serde = { version = "1", features = ["derive"] }
+uuid = { version = "1", features = ["serde"] }
+chrono = "0.4"
+rust_decimal = "1"
+plotters = { version = "0.3.7", default-features = false, features = ["svg_backend", "line_series"] }

@@ -1,0 +1,24 @@
+:root { --pico-font-size: 93.75%; --pico-spacing: 0.85rem; }
+nav a[aria-current] { color: var(--pico-color); font-weight: 600; }
+main h1 { font-size: 1.5rem; }
+article > h2 { font-size: 1.05rem; }
+label { display: inline-flex; align-items: center; gap: 0.5rem; }
+label select { width: auto; margin: 0; }
+form button[type=submit] { display: none; width: auto; margin: 0 0 0 0.5rem; }
+.cols { display: flex; flex-wrap: wrap; gap: var(--pico-spacing); align-items: flex-start; }
+.cols > article { flex: 1 1 auto; min-width: min(100%, 360px); margin: 0; }
+.grid { margin-bottom: var(--pico-block-spacing-vertical); }
+.stat { margin: 0; }
+.stat-value { font-size: 1.9rem; font-weight: 600; }
+.meter { display: grid; grid-template-columns: minmax(160px, 1fr) 2fr auto; align-items: center; gap: 0.75rem; }
+.meter progress { margin: 0; }
+.chart { margin: 1rem 0 0; overflow-x: auto; }
+.chart figcaption { font-weight: 600; margin-bottom: 0.5rem; }
+.chart svg { display: block; max-width: 100%; height: auto; }
+/* Plotters emits fixed colors; map them to the theme. */
+.chart svg text { fill: var(--pico-color); }
+.chart svg [stroke="#000000"] { stroke: var(--pico-muted-color); }
+.chart svg [stroke="#0000FF"] { stroke: var(--pico-primary); }
+.chart svg [stroke="#FF0000"] { stroke: var(--pico-del-color); }
+.chart svg rect[fill="#0000FF"] { fill: var(--pico-primary); }
+.chart svg rect[fill="#B4B4B4"] { fill: var(--pico-muted-color); }

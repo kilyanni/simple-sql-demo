@@ -1,0 +1,71 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\nSELECT\n    u.full_name,\n    u.email,\n    cm.joined_at,\n    cm.status,\n    STRING_AGG(r.name, ', ' ORDER BY r.name) AS roles\nFROM course_member AS cm\nINNER JOIN \"user\" AS u ON cm.user_uuid = u.uuid\nLEFT JOIN role_assignment AS ra\n    ON\n        u.uuid = ra.user_uuid\n        AND cm.course_uuid = ra.course_uuid\nLEFT JOIN role AS r ON ra.role_uuid = r.uuid\nWHERE cm.course_uuid = $1\nGROUP BY cm.user_uuid, cm.course_uuid, u.uuid\nORDER BY u.full_name\n",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "full_name",
+        "type_info": "Varchar",
+        "origin": {
+          "Table": {
+            "table": "\"user\"",
+            "name": "full_name"
+          }
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "email",
+        "type_info": "Varchar",
+        "origin": {
+          "Table": {
+            "table": "\"user\"",
+            "name": "email"
+          }
+        }
+      },
+      {
+        "ordinal": 2,
+        "name": "joined_at",
+        "type_info": "Timestamp",
+        "origin": {
+          "Table": {
+            "table": "course_member",
+            "name": "joined_at"
+          }
+        }
+      },
+      {
+        "ordinal": 3,
+        "name": "status",
+        "type_info": "Varchar",
+        "origin": {
+          "Table": {
+            "table": "course_member",
+            "name": "status"
+          }
+        }
+      },
+      {
+        "ordinal": 4,
+        "name": "roles",
+        "type_info": "Text",
+        "origin": "Expression"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      null
+    ]
+  },
+  "hash": "4203cc6f38a5d28aaf869c7f36d7b9b167c0e73667f1afef53b702ca301369d6"
+}

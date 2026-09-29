@@ -1,0 +1,42 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\nSELECT\n    u.full_name,\n    COUNT(DISTINCT s.uuid) AS \"submissions!\",\n    ROUND(AVG(g.points), 2) AS avg_points\nFROM \"user\" AS u\nINNER JOIN submission AS s ON u.uuid = s.submitter_uuid\nINNER JOIN file_upload AS fu ON s.file_upload_uuid = fu.uuid\nINNER JOIN task AS t ON fu.task_uuid = t.uuid\nINNER JOIN course_section AS cs ON t.course_section_uuid = cs.uuid\nLEFT JOIN grade AS g ON s.uuid = g.submission_uuid\nWHERE\n    cs.course_uuid = $1\n    AND u.uuid IN (\n        SELECT user_uuid FROM course_member\n        WHERE course_uuid = $1\n    )\nGROUP BY u.uuid\nORDER BY COUNT(DISTINCT s.uuid) DESC, avg_points DESC NULLS LAST\n",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "full_name",
+        "type_info": "Varchar",
+        "origin": {
+          "Table": {
+            "table": "\"user\"",
+            "name": "full_name"
+          }
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "submissions!",
+        "type_info": "Int8",
+        "origin": "Expression"
+      },
+      {
+        "ordinal": 2,
+        "name": "avg_points",
+        "type_info": "Numeric",
+        "origin": "Expression"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      false,
+      null,
+      null
+    ]
+  },
+  "hash": "14eedef64e18566ae4e3c7fabd9aab32dfac0fc7a71e42d78479845861ca6713"
+}

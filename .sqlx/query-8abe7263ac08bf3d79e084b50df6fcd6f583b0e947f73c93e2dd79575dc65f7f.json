@@ -1,0 +1,57 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\nSELECT\n    q.uuid,\n    q.title,\n    c.title AS course,\n    COUNT(qa.uuid) AS \"attempts!\"\nFROM quiz AS q\nINNER JOIN task AS t ON q.task_uuid = t.uuid\nINNER JOIN course_section AS cs ON t.course_section_uuid = cs.uuid\nINNER JOIN course AS c ON cs.course_uuid = c.uuid\nLEFT JOIN quiz_attempt AS qa ON q.uuid = qa.quiz_uuid AND qa.submitted_at IS NOT NULL\nGROUP BY q.uuid, c.uuid\nORDER BY c.title, q.title\n",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "uuid",
+        "type_info": "Uuid",
+        "origin": {
+          "Table": {
+            "table": "quiz",
+            "name": "uuid"
+          }
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "title",
+        "type_info": "Varchar",
+        "origin": {
+          "Table": {
+            "table": "quiz",
+            "name": "title"
+          }
+        }
+      },
+      {
+        "ordinal": 2,
+        "name": "course",
+        "type_info": "Varchar",
+        "origin": {
+          "Table": {
+            "table": "course",
+            "name": "title"
+          }
+        }
+      },
+      {
+        "ordinal": 3,
+        "name": "attempts!",
+        "type_info": "Int8",
+        "origin": "Expression"
+      }
+    ],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      null
+    ]
+  },
+  "hash": "8abe7263ac08bf3d79e084b50df6fcd6f583b0e947f73c93e2dd79575dc65f7f"
+}

@@ -1,0 +1,78 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\nSELECT\n    q.title AS quiz,\n    c.title AS course,\n    q.grading_method,\n    COUNT(ap.attempt_uuid) AS \"attempts!\",\n    COUNT(DISTINCT ap.student_uuid) AS \"students!\",\n    ROUND(AVG(ap.points), 2) AS avg_points,\n    (\n        SELECT COUNT(*)\n        FROM quiz_answer_text AS qat\n        INNER JOIN quiz_attempt AS qa ON qat.attempt_uuid = qa.uuid\n        WHERE\n            qa.quiz_uuid = q.uuid\n            AND qa.submitted_at IS NOT NULL\n            AND NOT EXISTS (\n                SELECT 1 FROM grade AS g\n                WHERE\n                    g.attempt_uuid = qat.attempt_uuid\n                    AND g.question_uuid = qat.question_uuid\n            )\n    ) AS \"pending!\"\nFROM quiz AS q\nINNER JOIN task AS t ON q.task_uuid = t.uuid\nINNER JOIN course_section AS cs ON t.course_section_uuid = cs.uuid\nINNER JOIN course AS c ON cs.course_uuid = c.uuid\nLEFT JOIN v_quiz_attempt_points AS ap ON q.uuid = ap.quiz_uuid\nGROUP BY q.uuid, c.uuid\nORDER BY c.title, q.title\n",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "quiz",
+        "type_info": "Varchar",
+        "origin": {
+          "Table": {
+            "table": "quiz",
+            "name": "title"
+          }
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "course",
+        "type_info": "Varchar",
+        "origin": {
+          "Table": {
+            "table": "course",
+            "name": "title"
+          }
+        }
+      },
+      {
+        "ordinal": 2,
+        "name": "grading_method",
+        "type_info": "Varchar",
+        "origin": {
+          "Table": {
+            "table": "quiz",
+            "name": "grading_method"
+          }
+        }
+      },
+      {
+        "ordinal": 3,
+        "name": "attempts!",
+        "type_info": "Int8",
+        "origin": "Expression"
+      },
+      {
+        "ordinal": 4,
+        "name": "students!",
+        "type_info": "Int8",
+        "origin": "Expression"
+      },
+      {
+        "ordinal": 5,
+        "name": "avg_points",
+        "type_info": "Numeric",
+        "origin": "Expression"
+      },
+      {
+        "ordinal": 6,
+        "name": "pending!",
+        "type_info": "Int8",
+        "origin": "Expression"
+      }
+    ],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  "hash": "172dbd5375895a1aa5f037dc0e579476064dbceaf6a88c069a2d1dd1f8ebedf9"
+}

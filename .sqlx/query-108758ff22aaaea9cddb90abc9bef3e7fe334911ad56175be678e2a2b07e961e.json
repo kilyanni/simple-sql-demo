@@ -1,0 +1,40 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\nSELECT\n    u.full_name,\n    u.email\nFROM file_upload AS fu\nINNER JOIN task AS t ON fu.task_uuid = t.uuid\nINNER JOIN course_section AS cs ON t.course_section_uuid = cs.uuid\nINNER JOIN v_course_student AS st ON cs.course_uuid = st.course_uuid\nINNER JOIN \"user\" AS u ON st.user_uuid = u.uuid\nWHERE\n    fu.uuid = $1\n    AND st.status = 'active'\n    AND NOT EXISTS (\n        SELECT 1 FROM v_submission_member AS sm\n        WHERE sm.file_upload_uuid = fu.uuid AND sm.user_uuid = u.uuid\n    )\nORDER BY u.full_name\n",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "full_name",
+        "type_info": "Varchar",
+        "origin": {
+          "Table": {
+            "table": "\"user\"",
+            "name": "full_name"
+          }
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "email",
+        "type_info": "Varchar",
+        "origin": {
+          "Table": {
+            "table": "\"user\"",
+            "name": "email"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      false,
+      false
+    ]
+  },
+  "hash": "108758ff22aaaea9cddb90abc9bef3e7fe334911ad56175be678e2a2b07e961e"
+}

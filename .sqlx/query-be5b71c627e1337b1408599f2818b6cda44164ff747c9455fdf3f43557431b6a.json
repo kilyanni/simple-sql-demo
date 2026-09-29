@@ -1,0 +1,71 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\nSELECT\n    c.title AS course,\n    fu.title AS assignment,\n    fu.max_points,\n    COUNT(s.uuid) AS \"submitted!\",\n    COUNT(g.uuid) AS \"graded!\",\n    ROUND(AVG(g.points), 2) AS average\nFROM file_upload AS fu\nINNER JOIN task AS t ON fu.task_uuid = t.uuid\nINNER JOIN course_section AS cs ON t.course_section_uuid = cs.uuid\nINNER JOIN course AS c ON cs.course_uuid = c.uuid\nLEFT JOIN submission AS s ON fu.uuid = s.file_upload_uuid\nLEFT JOIN grade AS g ON s.uuid = g.submission_uuid\nGROUP BY c.uuid, fu.uuid\nORDER BY c.title, fu.due_date NULLS LAST\n",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "course",
+        "type_info": "Varchar",
+        "origin": {
+          "Table": {
+            "table": "course",
+            "name": "title"
+          }
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "assignment",
+        "type_info": "Varchar",
+        "origin": {
+          "Table": {
+            "table": "file_upload",
+            "name": "title"
+          }
+        }
+      },
+      {
+        "ordinal": 2,
+        "name": "max_points",
+        "type_info": "Numeric",
+        "origin": {
+          "Table": {
+            "table": "file_upload",
+            "name": "max_points"
+          }
+        }
+      },
+      {
+        "ordinal": 3,
+        "name": "submitted!",
+        "type_info": "Int8",
+        "origin": "Expression"
+      },
+      {
+        "ordinal": 4,
+        "name": "graded!",
+        "type_info": "Int8",
+        "origin": "Expression"
+      },
+      {
+        "ordinal": 5,
+        "name": "average",
+        "type_info": "Numeric",
+        "origin": "Expression"
+      }
+    ],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      null,
+      null,
+      null
+    ]
+  },
+  "hash": "be5b71c627e1337b1408599f2818b6cda44164ff747c9455fdf3f43557431b6a"
+}

@@ -1,0 +1,83 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\nSELECT\n    q.title AS quiz,\n    c.title AS course,\n    qa.started_at,\n    qa.submitted_at,\n    ap.points,\n    (\n        SELECT SUM(points) FROM quiz_question\n        WHERE quiz_uuid = q.uuid\n    ) AS max_points\nFROM quiz_attempt AS qa\nINNER JOIN quiz AS q ON qa.quiz_uuid = q.uuid\nINNER JOIN task AS t ON q.task_uuid = t.uuid\nINNER JOIN course_section AS cs ON t.course_section_uuid = cs.uuid\nINNER JOIN course AS c ON cs.course_uuid = c.uuid\nLEFT JOIN v_quiz_attempt_points AS ap ON qa.uuid = ap.attempt_uuid\nWHERE qa.student_uuid = $1\nORDER BY qa.started_at DESC\n",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "quiz",
+        "type_info": "Varchar",
+        "origin": {
+          "Table": {
+            "table": "quiz",
+            "name": "title"
+          }
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "course",
+        "type_info": "Varchar",
+        "origin": {
+          "Table": {
+            "table": "course",
+            "name": "title"
+          }
+        }
+      },
+      {
+        "ordinal": 2,
+        "name": "started_at",
+        "type_info": "Timestamp",
+        "origin": {
+          "Table": {
+            "table": "quiz_attempt",
+            "name": "started_at"
+          }
+        }
+      },
+      {
+        "ordinal": 3,
+        "name": "submitted_at",
+        "type_info": "Timestamp",
+        "origin": {
+          "Table": {
+            "table": "quiz_attempt",
+            "name": "submitted_at"
+          }
+        }
+      },
+      {
+        "ordinal": 4,
+        "name": "points",
+        "type_info": "Numeric",
+        "origin": {
+          "Table": {
+            "table": "v_quiz_attempt_points",
+            "name": "points"
+          }
+        }
+      },
+      {
+        "ordinal": 5,
+        "name": "max_points",
+        "type_info": "Numeric",
+        "origin": "Expression"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      true,
+      true,
+      null
+    ]
+  },
+  "hash": "5ef56a0d3588ec138de3acf1867ea58bf031502c31a3fd9006c1ceb9e10cc568"
+}

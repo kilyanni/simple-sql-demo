@@ -1,0 +1,40 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\nSELECT\n    fu.uuid,\n    fu.title\nFROM file_upload AS fu\nINNER JOIN task AS t ON fu.task_uuid = t.uuid\nINNER JOIN course_section AS cs ON t.course_section_uuid = cs.uuid\nWHERE cs.course_uuid = $1\nORDER BY fu.title\n",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "uuid",
+        "type_info": "Uuid",
+        "origin": {
+          "Table": {
+            "table": "file_upload",
+            "name": "uuid"
+          }
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "title",
+        "type_info": "Varchar",
+        "origin": {
+          "Table": {
+            "table": "file_upload",
+            "name": "title"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      false,
+      false
+    ]
+  },
+  "hash": "591c54f6303ccfdccfec894ef6174a8aad729fe6f3f8e6607fab1ae7a3dc75b9"
+}

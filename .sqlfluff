@@ -1,0 +1,20 @@
+[sqlfluff]
+dialect = postgres
+# RF04: "assignment" is a keyword in some dialects; RF05: the "count!" aliases
+# tell sqlx a column is non-null; RF06: "user" must stay quoted in PostgreSQL.
+exclude_rules = RF04, RF05, RF06
+max_line_length = 100
+
+[sqlfluff:indentation]
+tab_space_size = 4
+
+[sqlfluff:rules:capitalisation.keywords]
+capitalisation_policy = upper
+
+[sqlfluff:rules:capitalisation.functions]
+extended_capitalisation_policy = upper
+# Trigger functions declared in this schema, not built-ins.
+ignore_words = answered_question_is_in_quiz,selected_option_is_in_quiz
+
+[sqlfluff:rules:capitalisation.types]
+extended_capitalisation_policy = upper

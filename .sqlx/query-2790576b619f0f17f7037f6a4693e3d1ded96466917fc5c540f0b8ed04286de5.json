@@ -1,0 +1,109 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\nSELECT\n    q.uuid AS quiz_uuid,\n    q.title AS quiz,\n    q.grading_method,\n    u.uuid AS student_uuid,\n    u.full_name,\n    sp.points AS \"points!\",\n    (\n        SELECT SUM(points) FROM quiz_question\n        WHERE quiz_uuid = q.uuid\n    ) AS max_points,\n    RANK() OVER (PARTITION BY q.uuid ORDER BY sp.points DESC) AS \"rank!\",\n    COUNT(*) OVER (PARTITION BY q.uuid) AS \"participants!\"\nFROM v_quiz_student_points AS sp\nINNER JOIN quiz AS q ON sp.quiz_uuid = q.uuid\nINNER JOIN \"user\" AS u ON sp.student_uuid = u.uuid\nWHERE\n    q.uuid IN (\n        SELECT quiz_uuid FROM quiz_attempt\n        WHERE student_uuid = $1 AND submitted_at IS NOT NULL\n    )\nORDER BY q.title ASC, q.uuid ASC, sp.points DESC, u.full_name ASC, u.uuid ASC\n",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "quiz_uuid",
+        "type_info": "Uuid",
+        "origin": {
+          "Table": {
+            "table": "quiz",
+            "name": "uuid"
+          }
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "quiz",
+        "type_info": "Varchar",
+        "origin": {
+          "Table": {
+            "table": "quiz",
+            "name": "title"
+          }
+        }
+      },
+      {
+        "ordinal": 2,
+        "name": "grading_method",
+        "type_info": "Varchar",
+        "origin": {
+          "Table": {
+            "table": "quiz",
+            "name": "grading_method"
+          }
+        }
+      },
+      {
+        "ordinal": 3,
+        "name": "student_uuid",
+        "type_info": "Uuid",
+        "origin": {
+          "Table": {
+            "table": "\"user\"",
+            "name": "uuid"
+          }
+        }
+      },
+      {
+        "ordinal": 4,
+        "name": "full_name",
+        "type_info": "Varchar",
+        "origin": {
+          "Table": {
+            "table": "\"user\"",
+            "name": "full_name"
+          }
+        }
+      },
+      {
+        "ordinal": 5,
+        "name": "points!",
+        "type_info": "Numeric",
+        "origin": {
+          "Table": {
+            "table": "v_quiz_student_points",
+            "name": "points"
+          }
+        }
+      },
+      {
+        "ordinal": 6,
+        "name": "max_points",
+        "type_info": "Numeric",
+        "origin": "Expression"
+      },
+      {
+        "ordinal": 7,
+        "name": "rank!",
+        "type_info": "Int8",
+        "origin": "Expression"
+      },
+      {
+        "ordinal": 8,
+        "name": "participants!",
+        "type_info": "Int8",
+        "origin": "Expression"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      null,
+      null,
+      null
+    ]
+  },
+  "hash": "2790576b619f0f17f7037f6a4693e3d1ded96466917fc5c540f0b8ed04286de5"
+}

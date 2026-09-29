@@ -1,0 +1,95 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\nSELECT\n    c.title AS course,\n    fu.title AS assignment,\n    g.points,\n    fu.max_points,\n    g.feedback,\n    g.graded_at,\n    ROUND(g.points / NULLIF(fu.max_points, 0) * 100, 1) AS percent\nFROM v_submission_member AS sm\nINNER JOIN submission AS s ON sm.submission_uuid = s.uuid\nINNER JOIN file_upload AS fu ON s.file_upload_uuid = fu.uuid\nINNER JOIN task AS t ON fu.task_uuid = t.uuid\nINNER JOIN course_section AS cs ON t.course_section_uuid = cs.uuid\nINNER JOIN course AS c ON cs.course_uuid = c.uuid\nINNER JOIN grade AS g ON s.uuid = g.submission_uuid\nWHERE sm.user_uuid = $1\nORDER BY g.graded_at DESC\n",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "course",
+        "type_info": "Varchar",
+        "origin": {
+          "Table": {
+            "table": "course",
+            "name": "title"
+          }
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "assignment",
+        "type_info": "Varchar",
+        "origin": {
+          "Table": {
+            "table": "file_upload",
+            "name": "title"
+          }
+        }
+      },
+      {
+        "ordinal": 2,
+        "name": "points",
+        "type_info": "Numeric",
+        "origin": {
+          "Table": {
+            "table": "grade",
+            "name": "points"
+          }
+        }
+      },
+      {
+        "ordinal": 3,
+        "name": "max_points",
+        "type_info": "Numeric",
+        "origin": {
+          "Table": {
+            "table": "file_upload",
+            "name": "max_points"
+          }
+        }
+      },
+      {
+        "ordinal": 4,
+        "name": "feedback",
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "grade",
+            "name": "feedback"
+          }
+        }
+      },
+      {
+        "ordinal": 5,
+        "name": "graded_at",
+        "type_info": "Timestamp",
+        "origin": {
+          "Table": {
+            "table": "grade",
+            "name": "graded_at"
+          }
+        }
+      },
+      {
+        "ordinal": 6,
+        "name": "percent",
+        "type_info": "Numeric",
+        "origin": "Expression"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      true,
+      false,
+      null
+    ]
+  },
+  "hash": "5fb7fd799b25f12b3876f65a61f0d4f81d2f129359c2c58c48e2f2bc042adbf5"
+}
